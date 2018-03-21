@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#37f4c1</color>
+    <color name="colorPrimaryDark">#1ae49d</color>
+    <color name="colorAccent">#37f4c1</color>
+    <color name="viewBg">#f1f5f8</color>
+    <color name="album_title">#1d1919</color>
+    <color name="backdrop_title">#201717</color>
+    <color name="backdrop_subtitle">#121010</color>
+</resources>

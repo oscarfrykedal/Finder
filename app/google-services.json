@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "835865632602",
+    "firebase_url": "https://finder-a4790.firebaseio.com",
+    "project_id": "finder-a4790",
+    "storage_bucket": "finder-a4790.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:835865632602:android:aff98230f1e5f598",
+        "android_client_info": {
+          "package_name": "com.example.oscar.finder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "835865632602-7h48dblfrdqje7icpfhsdmt15v653j00.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.oscar.finder",
+            "certificate_hash": "c098a9522eb08557eee5c7b765b0c666065a14de"
+          }
+        },
+        {
+          "client_id": "835865632602-8l1h5j4h0joatnnbl7546rf84l5o4ijs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyMdGHVT-hztyie7-p1NCGu7Zg99ufjxU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "835865632602-8l1h5j4h0joatnnbl7546rf84l5o4ijs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

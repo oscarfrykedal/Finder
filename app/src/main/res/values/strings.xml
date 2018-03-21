@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Card View</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_add_favourite">Karta</string>
+    <string name="action_play_next">Play Next</string>
+    <string name="backdrop_title">FINDER</string>
+    <string name="backdrop_subtitle">Find stuff people dont want</string>
+    <string name="title_activity_maps">Map</string>
+</resources>
