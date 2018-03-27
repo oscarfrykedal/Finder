@@ -68,7 +68,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
     }
 
     /**
-     * Showing popup menu when tapping on 3 dots
+     * Showing popup menu when tapping on maps
      */
     private void showPopupMenu(View view) {
         // inflate menu
