@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private StorageReference mStorage;
     private ProgressDialog mProgress;
     private FloatingActionButton fab;
-
+    Uri photoURI;
 
 
     @Override
@@ -69,16 +69,12 @@ public class MainActivity extends AppCompatActivity {
         fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                    startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE);
-
-                }
+                dispatchTakePictureIntent();
 
             }
         });
 
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView = findViewById(R.id.recycler_view);
 
         albumList = new ArrayList<>();
         adapter = new ItemsAdapter(this, albumList);
@@ -96,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    } //SLUT PÅ onCREATEF
+    } //SLUT PÅ onCREATE
     String mCurrentPhotoPath;
 
     private File createImageFile() throws IOException {
@@ -128,10 +124,9 @@ public class MainActivity extends AppCompatActivity {
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(this,
+                photoURI = FileProvider.getUriForFile(this,
                         "com.example.oscar.finder",
                         photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE);
             }
         }
@@ -144,12 +139,11 @@ public class MainActivity extends AppCompatActivity {
         if(requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK){
             mProgress.setMessage("Uploading...");
             mProgress.show();
-            Uri uri = data.getData();
-            Log.d("David", "onActivityResult: " + uri);
+            Log.d("David", "onActivityResult: " + photoURI);
 
 
-            StorageReference filepath = mStorage.child("Photos").child(uri.getLastPathSegment());
-            filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            StorageReference filepath = mStorage.child("Photos").child(photoURI.getLastPathSegment());
+            filepath.putFile(photoURI).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Toast.makeText(MainActivity.this, "Upload Successful!", Toast.LENGTH_SHORT).show();
@@ -170,10 +164,9 @@ public class MainActivity extends AppCompatActivity {
      * Will show and hide the toolbar title on scroll
      */
     private void initCollapsingToolbar() {
-        final CollapsingToolbarLayout collapsingToolbar =
-                (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        final CollapsingToolbarLayout collapsingToolbar = findViewById(R.id.collapsing_toolbar);
         collapsingToolbar.setTitle(" ");
-        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
+        AppBarLayout appBarLayout = findViewById(R.id.appbar);
         appBarLayout.setExpanded(true);
 
         // hiding & showing the title when toolbar expanded & collapsed
