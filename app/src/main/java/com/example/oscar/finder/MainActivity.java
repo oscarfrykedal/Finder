@@ -32,7 +32,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -148,6 +147,8 @@ public class MainActivity extends AppCompatActivity {
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Toast.makeText(MainActivity.this, "Upload Successful!", Toast.LENGTH_SHORT).show();
                     mProgress.dismiss();
+                    Intent popIntent = new Intent(getApplicationContext(), PopActivity.class);
+                    startActivity(popIntent);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
