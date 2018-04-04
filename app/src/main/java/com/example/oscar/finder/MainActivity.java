@@ -130,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
                 photoURI = FileProvider.getUriForFile(this,
                         "com.example.oscar.finder",
                         photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE);
             }
         }
@@ -151,8 +152,8 @@ public class MainActivity extends AppCompatActivity {
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Toast.makeText(MainActivity.this, "Upload Successful!", Toast.LENGTH_SHORT).show();
                     mProgress.dismiss();
-                   // Intent popIntent = new Intent(getApplicationContext(), PopActivity.class);
-                   // startActivity(popIntent);
+                    Intent popIntent = new Intent(getApplicationContext(), PopActivity.class);
+                    startActivity(popIntent);
 
 
                 }
