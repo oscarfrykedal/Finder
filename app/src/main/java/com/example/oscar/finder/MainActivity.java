@@ -39,6 +39,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+//import com.squareup.picasso.Picasso;
+
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private StorageReference mStorage;
     private ProgressDialog mProgress;
     private FloatingActionButton fab;
+    private ImageView popImg;
     Uri photoURI;
 
 
@@ -147,8 +150,10 @@ public class MainActivity extends AppCompatActivity {
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Toast.makeText(MainActivity.this, "Upload Successful!", Toast.LENGTH_SHORT).show();
                     mProgress.dismiss();
-                    Intent popIntent = new Intent(getApplicationContext(), PopActivity.class);
-                    startActivity(popIntent);
+                   // Intent popIntent = new Intent(getApplicationContext(), PopActivity.class);
+                   // startActivity(popIntent);
+
+
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override

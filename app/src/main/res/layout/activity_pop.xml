@@ -9,11 +9,17 @@
     tools:layout_editor_absoluteY="81dp">
 
 
+    <ImageView
+        android:id="@+id/popImg"
+        android:layout_width="385dp"
+        android:layout_height="284dp"
+        />
+
     <EditText
         android:id="@+id/editText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="292dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Name"
@@ -26,7 +32,7 @@
         android:id="@+id/editText2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="264dp"
+        android:layout_marginTop="384dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Phone Number"
@@ -39,7 +45,6 @@
         android:id="@+id/editText6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="45dp"
         android:ems="10"
         android:inputType="textPostalAddress"
         android:text="Address"
