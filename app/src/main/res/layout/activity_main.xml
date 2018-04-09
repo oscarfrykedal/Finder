@@ -90,4 +90,8 @@
 
     <include layout="@layout/content_main" />
 
+    <ImageView
+        android:id="@+id/imgV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </android.support.design.widget.CoordinatorLayout>

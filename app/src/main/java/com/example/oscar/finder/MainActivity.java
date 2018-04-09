@@ -22,6 +22,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -50,8 +51,10 @@ public class MainActivity extends AppCompatActivity {
     private StorageReference mStorage;
     private ProgressDialog mProgress;
     private FloatingActionButton fab;
-    private ImageView popImg;
+    public ImageButton imageButton;
     Uri photoURI;
+    //public ImageView imageView;
+
 
 
     @Override
@@ -62,10 +65,18 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         initCollapsingToolbar();
 
+        //imageView = findViewById(R.id.popImg);
 
         mStorage = FirebaseStorage.getInstance().getReference();
         mProgress = new ProgressDialog(this);
 
+/*        imageButton = findViewById(R.id.overflow);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            startActivity(new Intent(MainActivity.this, MapsActivity.class));
+            }
+        });*/
 
 
         fab = findViewById(R.id.fab);
@@ -95,8 +106,11 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     } //SLUT PÅ onCREATE
-    String mCurrentPhotoPath;
 
+
+
+
+    String mCurrentPhotoPath;
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -135,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -155,6 +170,8 @@ public class MainActivity extends AppCompatActivity {
                     Intent popIntent = new Intent(getApplicationContext(), PopActivity.class);
                     startActivity(popIntent);
 
+                    //Uri downloadUri = taskSnapshot.getDownloadUrl();
+                    //Picasso.get().load(downloadUri).into(imageView);
 
                 }
             }).addOnFailureListener(new OnFailureListener() {

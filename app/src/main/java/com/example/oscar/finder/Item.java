@@ -1,12 +1,15 @@
 package com.example.oscar.finder;
 
+import android.app.Activity;
+
 /**
  * Created by oscar on 2018-03-19.
  */
-public class Item {
+public class Item extends Activity{
     private String name;
     private int num;
     private int address;
+
 
     public Item() {
     }
