@@ -2,17 +2,14 @@ package com.example.oscar.finder;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.widget.PopupMenu;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -60,8 +57,11 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         Item item = itemList.get(position);
+        Uri myUri = Uri.parse(item.getUrl());
         holder.title.setText(item.getName());
         holder.count.setText(item.getNum() + " number");
+        holder.thumbnail.setImageURI(myUri);
+
 
         // loading cover using Glide library
         Glide.with(mContext).load(item.getAddress()).into(holder.thumbnail);
@@ -82,7 +82,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
 
     /**
      * Showing popup menu when tapping on maps
-     */
+     *//*
           private void showPopupMenu(View view) {
         Intent mapsIntent = new Intent(mContext, MapsActivity.class);
         PopupMenu popup = new PopupMenu(mContext, view);
@@ -91,12 +91,12 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
         popup.setOnMenuItemClickListener(new MyMenuItemClickListener());
         popup.show();
 
-    }
+    }*/
 
     /**
      * Click listener for popup menu items
      */
-    class MyMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
+ /*   class MyMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
         public MyMenuItemClickListener() {
 
         }
@@ -111,14 +111,14 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
 
                     return true;
 
-                /*case R.id.action_play_next:
+                *//*case R.id.action_play_next:
                     Toast.makeText(mContext, "next", Toast.LENGTH_SHORT).show();
-                    return true;*/
+                    return true;*//*
                 default:
             }
             return false;
         }
-    }
+    }*/
 
     @Override
     public int getItemCount() {

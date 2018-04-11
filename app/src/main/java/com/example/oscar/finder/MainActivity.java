@@ -29,6 +29,11 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -39,6 +44,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 //import com.squareup.picasso.Picasso;
 
@@ -53,7 +59,9 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton fab;
     public ImageButton imageButton;
     Uri photoURI;
-    //public ImageView imageView;
+    public ImageView imageView;
+    FirebaseDatabase database;
+    DatabaseReference dataRef;
 
 
 
@@ -65,10 +73,12 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         initCollapsingToolbar();
 
-        //imageView = findViewById(R.id.popImg);
+        imageView = findViewById(R.id.popImg);
 
         mStorage = FirebaseStorage.getInstance().getReference();
         mProgress = new ProgressDialog(this);
+        database = FirebaseDatabase.getInstance();
+        dataRef = database.getReference();
 
 /*        imageButton = findViewById(R.id.overflow);
         imageButton.setOnClickListener(new View.OnClickListener() {
@@ -150,9 +160,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    String uniqeId;
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        uniqeId = UUID.randomUUID().toString();
 
         Log.d("David", "onActivityResult: ");
         if(requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK){
@@ -165,13 +179,15 @@ public class MainActivity extends AppCompatActivity {
             filepath.putFile(photoURI).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Uri downloadUri = taskSnapshot.getDownloadUrl();
+                    Item item = new Item("name", 1, 2, downloadUri.toString(), uniqeId);
+                    dataRef.child("Items").child(uniqeId).setValue(item);
+
                     Toast.makeText(MainActivity.this, "Upload Successful!", Toast.LENGTH_SHORT).show();
                     mProgress.dismiss();
                     Intent popIntent = new Intent(getApplicationContext(), PopActivity.class);
-                    startActivity(popIntent);
 
-                    //Uri downloadUri = taskSnapshot.getDownloadUrl();
-                    //Picasso.get().load(downloadUri).into(imageView);
+                    startActivity(popIntent);
 
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -214,12 +230,42 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+private void showData(DataSnapshot dataSnapshot){
+        albumList.clear();
+        for (DataSnapshot ds: dataSnapshot.getChildren()){
+            Item item = ds.getValue(Item.class);
+            albumList.add(item);
+        }
+        dataRef = database.getReference();
+
+}
 
     /**
      * Items for testing
      */
+    private static final String TAG = "bajs";
     private void prepareItems() {
-        int[] covers = new int[]{
+
+       dataRef = database.getReference().child("Items");
+
+        // Read from the database
+        dataRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                showData(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+
+
+      /*  int[] covers = new int[]{
                 R.drawable.bord,
                 R.drawable.stol,
                 R.drawable.dator,
@@ -229,10 +275,10 @@ public class MainActivity extends AppCompatActivity {
                 R.drawable.tv,
                 R.drawable.porslin};
 
-        Item a = new Item("Bord", 070-7812378, covers[0]);
-        albumList.add(a);
+        Item a = new Item("Bord", 070-7812378, covers[0], "sda", "asdas");
+        albumList.add();
 
-        a = new Item("stol", 070-2342344, covers[1]);
+        *//*a = new Item("stol", 070-2342344, covers[1]);
         albumList.add(a);
 
         a = new Item("dator", 070-2342344, covers[2]);
@@ -252,7 +298,7 @@ public class MainActivity extends AppCompatActivity {
 
         a = new Item("porslin", 070-2342344, covers[7]);
         albumList.add(a);
-
+*/
         adapter.notifyDataSetChanged();
     }
 
