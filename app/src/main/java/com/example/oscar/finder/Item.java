@@ -6,14 +6,14 @@ package com.example.oscar.finder;
 public class Item {
     private String name;
     private int num;
-    private int address;
+    private String address;
     private String url;
     private String id;
 
     public Item() {
     }
 
-    public Item(String name, int num, int address, String url, String id) {
+    public Item(String name, int num, String address, String url, String id) {
         this.name = name;
         this.num = num;
         this.address = address;
@@ -53,11 +53,12 @@ public class Item {
         this.num = num;
     }
 
-    public int getAddress() {
+    public String getAddress() {
         return address;
     }
 
-    public void setAddress(int address) {
+    public void setAddress(String address) {
         this.address = address;
     }
+
 }

@@ -24,6 +24,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -58,11 +59,11 @@ public class MainActivity extends AppCompatActivity {
     private ProgressDialog mProgress;
     private FloatingActionButton fab;
     public ImageButton imageButton;
-    Uri photoURI;
+    static Uri photoURI;
     public ImageView imageView;
     FirebaseDatabase database;
     DatabaseReference dataRef;
-
+    TextView receive;
 
 
     @Override
@@ -73,6 +74,10 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         initCollapsingToolbar();
 
+        boolean upload = (getIntent().getBooleanExtra("upload", false));
+
+        Log.d("Oscar", "onCreate: " + upload);
+
         imageView = findViewById(R.id.popImg);
 
         mStorage = FirebaseStorage.getInstance().getReference();
@@ -80,13 +85,7 @@ public class MainActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         dataRef = database.getReference();
 
-/*        imageButton = findViewById(R.id.overflow);
-        imageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            startActivity(new Intent(MainActivity.this, MapsActivity.class));
-            }
-        });*/
+        //receive = (TextView)findViewById(R.id.editText1);
 
 
         fab = findViewById(R.id.fab);
@@ -97,6 +96,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        if(upload) {
+            upload();
+        }
+
         recyclerView = findViewById(R.id.recycler_view);
 
         albumList = new ArrayList<>();
@@ -106,7 +109,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
 
         prepareItems();
 
@@ -116,9 +118,6 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     } //SLUT PÅ onCREATE
-
-
-
 
     String mCurrentPhotoPath;
     private File createImageFile() throws IOException {
@@ -154,7 +153,10 @@ public class MainActivity extends AppCompatActivity {
                 photoURI = FileProvider.getUriForFile(this,
                         "com.example.oscar.finder",
                         photoFile);
+                Log.d("david1", "dispatchTakePictureIntent: " + photoURI);
+
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                takePictureIntent.putExtra("uri",  photoURI.toString());
                 startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE);
             }
         }
@@ -164,41 +166,63 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+     //   Intent intent = getIntent();
+     //   Uri hej = Uri.parse(intent.getStringExtra("uri"));
+     //   Log.d("David", "onActivityResult: " + hej);
+
+        if(requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK){
+
+            Intent popIntent = new Intent(getApplicationContext(), PopActivity.class);
+
+            startActivity(popIntent);
+            Log.d("oscar-", "onActivityResult:" + photoURI);
+
+            }
+
         super.onActivityResult(requestCode, resultCode, data);
+
+    }
+
+
+    private void upload() {
+
+
+        mProgress.setMessage("Uploading...");
+        mProgress.show();
+        Log.d("David", "onActivityResult: " + photoURI);
 
         uniqeId = UUID.randomUUID().toString();
 
-        Log.d("David", "onActivityResult: ");
-        if(requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK){
-            mProgress.setMessage("Uploading...");
-            mProgress.show();
-            Log.d("David", "onActivityResult: " + photoURI);
+
+        StorageReference filepath = mStorage.child("Photos").child(photoURI.getLastPathSegment());
+        filepath.putFile(photoURI).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
 
 
-            StorageReference filepath = mStorage.child("Photos").child(photoURI.getLastPathSegment());
-            filepath.putFile(photoURI).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Uri downloadUri = taskSnapshot.getDownloadUrl();
-                    Item item = new Item("name", 1, 2, downloadUri.toString(), uniqeId);
-                    dataRef.child("Items").child(uniqeId).setValue(item);
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                    Toast.makeText(MainActivity.this, "Upload Successful!", Toast.LENGTH_SHORT).show();
-                    mProgress.dismiss();
-                    Intent popIntent = new Intent(getApplicationContext(), PopActivity.class);
+                String items = (getIntent().getStringExtra("EditValue"));
+                Log.d("Oscar2", "onSuccess: " + items);
 
-                    startActivity(popIntent);
+                Uri downloadUri = taskSnapshot.getDownloadUrl();
 
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(MainActivity.this, "Upload Failed!", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
+                Item item = new Item(items, 1, "gatan", downloadUri.toString(), uniqeId);
+
+                dataRef.child("Items").child(uniqeId).setValue(item);
+
+                Toast.makeText(MainActivity.this, "Upload Successful!", Toast.LENGTH_SHORT).show();
+                mProgress.dismiss();
+
+            }
+
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(MainActivity.this, "Upload Failed!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
-
 
     /**
      * Initializing collapsing toolbar
@@ -230,23 +254,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-private void showData(DataSnapshot dataSnapshot){
-        albumList.clear();
-        for (DataSnapshot ds: dataSnapshot.getChildren()){
-            Item item = ds.getValue(Item.class);
-            albumList.add(item);
-        }
-        dataRef = database.getReference();
 
-}
-
-    /**
-     * Items for testing
-     */
-    private static final String TAG = "bajs";
     private void prepareItems() {
 
-       dataRef = database.getReference().child("Items");
+        dataRef = database.getReference().child("Items");
 
         // Read from the database
         dataRef.addValueEventListener(new ValueEventListener() {
@@ -255,52 +266,35 @@ private void showData(DataSnapshot dataSnapshot){
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 showData(dataSnapshot);
+
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
-                Log.w(TAG, "Failed to read value.", error.toException());
+
             }
         });
 
-
-      /*  int[] covers = new int[]{
-                R.drawable.bord,
-                R.drawable.stol,
-                R.drawable.dator,
-                R.drawable.lampa,
-                R.drawable.bil,
-                R.drawable.backpack,
-                R.drawable.tv,
-                R.drawable.porslin};
-
-        Item a = new Item("Bord", 070-7812378, covers[0], "sda", "asdas");
-        albumList.add();
-
-        *//*a = new Item("stol", 070-2342344, covers[1]);
-        albumList.add(a);
-
-        a = new Item("dator", 070-2342344, covers[2]);
-        albumList.add(a);
-
-        a = new Item("lampa", 070-2342344, covers[3]);
-        albumList.add(a);
-
-        a = new Item("bil", 070-2342344, covers[4]);
-        albumList.add(a);
-
-        a = new Item("ryggsäck", 070-2342344, covers[5]);
-        albumList.add(a);
-
-        a = new Item("tv", 070-2342344, covers[6]);
-        albumList.add(a);
-
-        a = new Item("porslin", 070-2342344, covers[7]);
-        albumList.add(a);
-*/
         adapter.notifyDataSetChanged();
     }
+
+    private void showData(DataSnapshot dataSnapshot){
+        albumList.clear();
+        for (DataSnapshot ds: dataSnapshot.getChildren()){
+            Item item = ds.getValue(Item.class);
+            albumList.add(item);
+        }
+        dataRef = database.getReference();
+        recyclerView.setAdapter(adapter);
+
+}
+
+    /**
+     * Items for testing
+     */
+    ;
+
 
     /**
      * RecyclerView item decoration - give equal margin around grid item

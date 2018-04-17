@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,7 +23,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, count;
         public ImageView thumbnail, overflow;
-        public ImageButton imgButton;
+
 
 
 
@@ -60,11 +59,9 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
         Uri myUri = Uri.parse(item.getUrl());
         holder.title.setText(item.getName());
         holder.count.setText(item.getNum() + " number");
-        holder.thumbnail.setImageURI(myUri);
-
 
         // loading cover using Glide library
-        Glide.with(mContext).load(item.getAddress()).into(holder.thumbnail);
+        Glide.with(mContext).load(item.getUrl()).into(holder.thumbnail);
 
         holder.overflow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,53 +69,9 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
                 view.getContext().startActivity(new Intent(view.getContext(),MapsActivity.class));
             }
         });
-     /*       @Override
-            public void onClick(View view) {
-                showPopupMenu(holder.overflow);
-            }
-        });*/
     }
 
 
-    /**
-     * Showing popup menu when tapping on maps
-     *//*
-          private void showPopupMenu(View view) {
-        Intent mapsIntent = new Intent(mContext, MapsActivity.class);
-        PopupMenu popup = new PopupMenu(mContext, view);
-        MenuInflater inflater = popup.getMenuInflater();
-        inflater.inflate(R.menu.menu_item, popup.getMenu());
-        popup.setOnMenuItemClickListener(new MyMenuItemClickListener());
-        popup.show();
-
-    }*/
-
-    /**
-     * Click listener for popup menu items
-     */
- /*   class MyMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
-        public MyMenuItemClickListener() {
-
-        }
-
-        @Override
-        public boolean onMenuItemClick(MenuItem menuItem) {
-
-            switch (menuItem.getItemId()) {
-                case R.id.action_maps:
-                    Toast.makeText(mContext,  "karta öppnad", Toast.LENGTH_SHORT).show();
-
-
-                    return true;
-
-                *//*case R.id.action_play_next:
-                    Toast.makeText(mContext, "next", Toast.LENGTH_SHORT).show();
-                    return true;*//*
-                default:
-            }
-            return false;
-        }
-    }*/
 
     @Override
     public int getItemCount() {

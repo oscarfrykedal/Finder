@@ -4,16 +4,20 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 public class PopActivity extends Activity {
 
     EditText editText1, editText2, editText3;
     Button button;
+    ImageView imageView;
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,14 +28,24 @@ public class PopActivity extends Activity {
         editText2 = findViewById(R.id.editText2);
         editText3 = findViewById(R.id.editText3);
         button = findViewById(R.id.popBtn);
+        imageView = findViewById(R.id.popImg);
+
+
+
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(PopActivity.this, MainActivity.class);
+                intent = new Intent(getApplicationContext(),MainActivity.class);
+                intent.putExtra("EditValue", editText1.getText().toString());
+                intent.putExtra("EditValue2", editText2.getText().toString());
+                intent.putExtra("upload", true);
                 startActivity(intent);
+                Log.d("oscar1", "onClick: funkr");
                 }
+
+
         });
 
 
