@@ -167,9 +167,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-     //   Intent intent = getIntent();
-     //   Uri hej = Uri.parse(intent.getStringExtra("uri"));
-     //   Log.d("David", "onActivityResult: " + hej);
+
 
         if(requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK){
 
@@ -201,13 +199,14 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
+                String adress = (getIntent().getStringExtra("EditValue2"));
                 String items = (getIntent().getStringExtra("EditValue"));
+                String number = (getIntent().getStringExtra( "EditValue3"));
                 Log.d("Oscar2", "onSuccess: " + items);
 
                 Uri downloadUri = taskSnapshot.getDownloadUrl();
 
-                Item item = new Item(items, 1, "gatan", downloadUri.toString(), uniqeId);
+                Item item = new Item(items, 1, adress, downloadUri.toString(), uniqeId);
 
                 dataRef.child("Items").child(uniqeId).setValue(item);
 

@@ -38,8 +38,10 @@ public class PopActivity extends Activity {
             public void onClick(View view) {
 
                 intent = new Intent(getApplicationContext(),MainActivity.class);
+
                 intent.putExtra("EditValue", editText1.getText().toString());
                 intent.putExtra("EditValue2", editText2.getText().toString());
+                intent.putExtra("EditValue3", editText3.getText().toString());
                 intent.putExtra("upload", true);
                 startActivity(intent);
                 Log.d("oscar1", "onClick: funkr");

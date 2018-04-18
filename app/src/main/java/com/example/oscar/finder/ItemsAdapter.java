@@ -2,7 +2,6 @@ package com.example.oscar.finder;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,9 +55,9 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         Item item = itemList.get(position);
-        Uri myUri = Uri.parse(item.getUrl());
+        //Uri myUri = Uri.parse(item.getUrl());
         holder.title.setText(item.getName());
-        holder.count.setText(item.getNum() + " number");
+        holder.count.setText(item.getAddress());
 
         // loading cover using Glide library
         Glide.with(mContext).load(item.getUrl()).into(holder.thumbnail);

@@ -25,6 +25,7 @@
             app:expandedTitleTextAppearance="@android:color/transparent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
+
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
@@ -62,12 +63,6 @@
 
                 </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/imgView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-
             </RelativeLayout>
 
             <android.support.v7.widget.Toolbar
@@ -90,8 +85,4 @@
 
     <include layout="@layout/content_main" />
 
-    <ImageView
-        android:id="@+id/imgV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 </android.support.design.widget.CoordinatorLayout>
