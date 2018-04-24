@@ -12,9 +12,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import static com.example.oscar.finder.MainActivity.photoURI;
+
 public class PopActivity extends Activity {
 
-    EditText editText1, editText2, editText3;
+    EditText editText1, editText2;
     Button button;
     ImageView imageView;
     Intent intent;
@@ -26,25 +28,27 @@ public class PopActivity extends Activity {
 
         editText1 = findViewById(R.id.editText1);
         editText2 = findViewById(R.id.editText2);
-        editText3 = findViewById(R.id.editText3);
+        //editText3 = findViewById(R.id.editText3);
         button = findViewById(R.id.popBtn);
         imageView = findViewById(R.id.popImg);
 
 
-
-
+        imageView.setImageURI(photoURI);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+
+                Log.d("oscaar", "onClick: " + photoURI);
                 intent = new Intent(getApplicationContext(),MainActivity.class);
 
                 intent.putExtra("EditValue", editText1.getText().toString());
                 intent.putExtra("EditValue2", editText2.getText().toString());
-                intent.putExtra("EditValue3", editText3.getText().toString());
+                //intent.putExtra("EditValue3", editText3.getText().toString());
                 intent.putExtra("upload", true);
                 startActivity(intent);
                 Log.d("oscar1", "onClick: funkr");
+
                 }
 
 

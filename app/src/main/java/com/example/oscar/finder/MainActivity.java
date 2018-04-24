@@ -167,13 +167,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-
+     //   Intent intent = getIntent();
+     //   Uri hej = Uri.parse(intent.getStringExtra("uri"));
+     //   Log.d("David", "onActivityResult: " + hej);
 
         if(requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK){
 
             Intent popIntent = new Intent(getApplicationContext(), PopActivity.class);
-
             startActivity(popIntent);
+
             Log.d("oscar-", "onActivityResult:" + photoURI);
 
             }
